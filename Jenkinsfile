@@ -22,15 +22,7 @@ pipeline {
             }
             
         }
-        stage('Deployment') {
-            // Deployment
-            steps {
-                script {
-                    echo "deployment"
-                    sh 'cp MavenProject/multi3/target/*.war /var/lib/tomcat8/webapps/'
-                }
-            }
-        }
+        
         stage('publish html report') {
             steps{
                 echo "publishing the html report"
