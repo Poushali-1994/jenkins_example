@@ -44,8 +44,7 @@ pipeline {
         }
 	}
     post {
-        always {
-            archiveArtifacts artifacts: 'generatedFile.txt', onlyIfSuccessful: true
+	    always {
 			emailext (
 				subject: "Job '${env.JOB_NAME} ${env.BUILD_NUMBER}'",
 				body: """<p>Successfully completed pipeline project with archiving the artifacts, check console output at <a href="${env.BUILD_URL}">${env.JOB_NAME}</a></p>""",
