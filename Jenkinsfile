@@ -23,12 +23,6 @@ pipeline {
             
         }
         
-        stage('publish html report') {
-            steps{
-                echo "publishing the html report"
-                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
-            }
-        }
         stage('clean up') {
             steps {
                 echo "cleaning up the workspace"
