@@ -1,57 +1,58 @@
 pipeline {
-    agent any 
-    stages {
-        stage('Clone') {
+   agent { label 'window' }
+   tools{
+		maven "MyMaven"
+		jdk "jdk"
+   }
+   stages {
+    stage('Clone and Check out') {
+      steps {
+        script {
+			echo "Git clone and check step"
+           // The below will clone your repo and will be checked out to master branch by default.
+           git credentialsId: 'Poushali-1994', url: 'https://github.com/Poushali-1994/jenkins_example.git'
+           // Do a ls -lart to view all the files are cloned. It will be clonned. This is just for you to be sure about it.
+           sh "ls -lart ./*" 
+           // List all branches in your repo. 
+           sh "git branch -a"
+           // Checkout to a specific branch in your repo.
+           sh "git checkout master"
+          }
+       }
+    }
+	stage('Build') {
+		steps {
+			script {
+				echo "Building a maven project ....................."
+				sh "mvn -f MavenProject/pom.xml clean install"	
+			}
+		}
+	}
+        stage('Archive') {
             steps {
-                echo "checking out the repo"
-                git 'https://github.com/Poushali-1994/jenkins_example.git'
-            
-            }
+				script{
+				echo "Archiving ..................."
+                sh 'echo "artifact file" > generatedFile.txt'
+				archiveArtifacts 'MavenProject/multi3/target/*.war'
+				}
+			}
         }
-        stage('build'){
-            steps {
-                echo "building the project"
-                sh "cd MavenProject ; mvn clean install ; pwd"
-            }
-        }
-        
-        stage('Archieve Artifacts'){
-            steps {
-                echo "archiving the artifacts"
-                archiveArtifacts 'MavenProject/multi3/target/*.war'
-            }
-            
-        }
-        
-        stage('clean up') {
+		stage('clean up') {
             steps {
                 echo "cleaning up the workspace"
                 cleanWs()
             }
         }
-        stage("Metrics"){
-            steps{
-            parallel ( "JavaNcss Report":   
-            {
-                git 'https://github.com/Poushali-1994/jenkins_example.git'
-                sh "cd javancss-master ; mvn test javancss:report ; pwd"
-                  
-            },
-            "FindBugs Report" : {
-                sh "mkdir javancss1 ; cd javancss1 ;pwd"
-                git 'https://github.com/Poushali-1994/jenkins_example.git'
-                sh "cd javancss-master ; mvn findbugs:findbugs ; pwd"
-                deleteDir()
-
-              }
-         )
-            }
-         post{
-                success {
-                    emailext body: 'Successfully completed pipeline project with archiving the artifacts', subject: 'Pipeline was successfull', to: 'pbpoushalibanerjee7@gmail.com'
-                }
-    }
-}
-        
-    }
+	}
+    post {
+        always {
+            archiveArtifacts artifacts: 'generatedFile.txt', onlyIfSuccessful: true
+			emailext (
+				subject: "Job '${env.JOB_NAME} ${env.BUILD_NUMBER}'",
+				body: """<p>Successfully completed pipeline project with archiving the artifacts, check console output at <a href="${env.BUILD_URL}">${env.JOB_NAME}</a></p>""",
+				to: "pbpoushalibanerjee7@gmail.com",
+				from: "jenkins@code-maven.com"
+			)
+        }
+	}    
 }
