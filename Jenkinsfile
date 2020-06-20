@@ -8,7 +8,7 @@ pipeline {
     stage('Clone and Check out') {
       steps {
         script {
-			echo "Git clone and check step"
+	   echo "Git clone and check step"
            // The below will clone your repo and will be checked out to master branch by default.
            git credentialsId: 'Poushali-1994', url: 'https://github.com/Poushali-1994/jenkins_example.git'
            // Do a ls -lart to view all the files are cloned. It will be clonned. This is just for you to be sure about it.
@@ -32,7 +32,6 @@ pipeline {
             steps {
 				script{
 				echo "Archiving ..................."
-                sh 'echo "artifact file" > generatedFile.txt'
 				archiveArtifacts 'MavenProject/multi3/target/*.war'
 				}
 			}
