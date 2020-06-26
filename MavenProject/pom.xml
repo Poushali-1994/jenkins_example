@@ -87,10 +87,10 @@
 	    </plugin>
 	    <plugin>
     		<groupId>org.apache.tomcat.maven</groupId>
-    		<artifactId>tomcat7-maven-plugin</artifactId>
-    		<version>2.2</version>
+    		<artifactId>tomcat9-maven-plugin</artifactId>
+    		<version>9.0.16</version>
     		<configuration>
-        	    <url>http://localhost:8080/manager/text</url>
+        	    <url>http://34.232.70.149:8082/manager/text</url>
         	    <server>TomcatServer</server>
         	    <path>/myapp</path>
     		</configuration>
