@@ -51,7 +51,7 @@ pipeline {
             steps {
                 script {
                     echo "Deployment ............."
-                    sh 'cp MavenProject/multi3/target/*.war /var/lib/tomcat9/webapps/'
+                //    sh 'cp MavenProject/multi3/target/*.war /var/lib/tomcat9/webapps/'
 					// sh "mvn tomcat9:deploy"
                 }
             }
