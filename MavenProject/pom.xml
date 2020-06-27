@@ -87,7 +87,6 @@
 	    </plugin>
 	    <plugin>
     		<groupId>org.apache.tomcat.maven</groupId>
-		<prefix>tomcat</prefix>
 		    <artifactId>tomcat-maven-plugin</artifactId>
     		<configuration>
         	    <url>http://34.232.70.149:8082/manager/text</url>
